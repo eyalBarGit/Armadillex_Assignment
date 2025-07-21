@@ -2,13 +2,9 @@
   <div class="q-pa-md">
     <q-table
       flat
-      bordered
-      title="Treats"
       :rows="rows"
       :columns="columns"
       :filter="filter"
-      no-data-label="I didn't find anything for you"
-      no-results-label="The filter didn't uncover any results"
       row-key="name"
       :pagination="pagination"
     >
@@ -18,6 +14,14 @@
             <q-icon name="search" />
           </template>
         </q-input>
+      </template>
+
+      <template v-slot:body="props">
+        <q-tr :props="props" @click="handleCopanyClick(props.row)" class="cursor-pointer">
+          <q-td v-for="col in props.cols" :key="col.name" :props="props">
+            {{ col.value }}
+          </q-td>
+        </q-tr>
       </template>
 
       <template v-slot:no-data="{ icon, message, filter }">
@@ -33,6 +37,11 @@
 
 <script setup>
 import { ref, defineProps, onMounted } from 'vue'
+import { columns } from './companies.table.service'
+import { useRouter } from 'vue-router'
+import { ROUTES } from 'src/router/const.js'
+
+const router = useRouter()
 const props = defineProps({
   companies: {
     type: Array,
@@ -46,45 +55,13 @@ onMounted(() => {
 const filter = ref('')
 const pagination = ref({
   page: 1,
-  rowsPerPage: 10, // שים כמה שאתה רוצה
+  rowsPerPage: 10,
 })
-const columns = [
-  {
-    name: 'name',
-    required: true,
-    label: 'Name',
-    align: 'left',
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-  {
-    name: 'isActive',
-    required: true,
-    label: 'Is Active',
-    align: 'left',
-    field: (row) => row.active,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
 
-  {
-    name: 'country',
-    required: true,
-    label: 'Country',
-    align: 'left',
-    field: (row) => row.country,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-  {
-    name: 'added',
-    required: true,
-    label: 'Date Added',
-    align: 'left',
-    field: (row) => row.dateAdded,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-]
+const handleCopanyClick = (company) => {
+  router.push({
+    name: ROUTES.COMPANY,
+    params: { companyId: company.id },
+  })
+}
 </script>

@@ -5,19 +5,22 @@ const routes = [
   {
     path: '/',
     name: ROUTES.APP,
-    redirect: ROUTES.COMPANY,
+    redirect: ROUTES.COMPANIES,
     component: AppIndex,
     children: [
       {
-        path: ROUTES.COMPANY,
-        name: ROUTES.COMPANY,
+        path: ROUTES.COMPANIES,
+        name: ROUTES.COMPANIES,
         component: () => import('src/pages/company/CompanyIndex.vue'),
+      },
+      {
+        path: '/companies/:companyId',
+        name: ROUTES.COMPANY,
+        component: () => import('src/pages/CompanyDetails/CompanyDetails.vue'),
       },
     ],
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),

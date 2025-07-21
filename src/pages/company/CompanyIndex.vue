@@ -14,6 +14,5 @@
 <script setup>
 import { useCompanies } from 'src/composables/useCompanies'
 import CompanyListTable from 'src/components/Companies/CompanyList/CompaniesListTable.vue'
-// import CompaniesList from 'src/components/Companies/CompanyList/CompanyList.vue'
 const { companies } = useCompanies()
 </script>
