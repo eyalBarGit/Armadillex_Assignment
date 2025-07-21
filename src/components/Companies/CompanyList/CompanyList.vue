@@ -1,17 +1,32 @@
 <template>
   <div class="company-list">
-    <h2>Company List</h2>
-    <ul>
-      <li v-for="company in props?.companies" :key="company?.id">
-        <CompanyListItem :company="company" />
-      </li>
-    </ul>
-    <p v-if="companies.length === 0">No companies available.</p>
+    <CompanyListTitles />
+    <q-list>
+      <CompanyListItem
+        :company="company"
+        v-for="company in pagedCompanies"
+        :key="company?.id"
+        class="cursor-pointer"
+      />
+    </q-list>
+    <q-separator class="q-my-md" />
+    <div class="flex full-width justify-center">
+      <q-pagination
+        v-model="page"
+        :max="maxPages"
+        max-pages="5"
+        boundary-numbers
+        dense
+        direction-links
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
 import CompanyListItem from '../CompanyListItem/CompanyListItem.vue'
+import CompanyListTitles from './CompanyListTitles/CompanyListTitles.vue'
+import { computed, defineProps, ref } from 'vue'
 
 const props = defineProps({
   companies: {
@@ -19,13 +34,18 @@ const props = defineProps({
     required: true,
   },
 })
+
+const page = ref(1)
+const perPage = 10
+const maxPages = computed(() => Math.ceil(props.companies.length / perPage))
+
+const pagedCompanies = computed(() => {
+  const start = (page.value - 1) * perPage
+  return props.companies.slice(start, start + perPage)
+})
 </script>
 
 <style scoped>
-.company-list {
-  width: 100%;
-  border: 2px solid blue;
-}
 .company-list {
   padding: 16px;
 }
