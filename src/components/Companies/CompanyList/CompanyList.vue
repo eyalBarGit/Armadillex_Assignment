@@ -1,12 +1,12 @@
 <template>
   <div class="company-list">
-    <CompanyListTitles />
+    <CompanyListTitles @handleSortBy="handleSortBy" />
     <q-list>
       <CompanyListItem
         :company="company"
-        v-for="company in pagedCompanies"
+        v-for="company in companiesToDisplay"
         :key="company?.id"
-        class="cursor-pointer"
+        class="cursor-pointer relative"
       />
     </q-list>
     <q-separator class="q-my-md" />
@@ -26,7 +26,7 @@
 <script setup>
 import CompanyListItem from '../CompanyListItem/CompanyListItem.vue'
 import CompanyListTitles from './CompanyListTitles/CompanyListTitles.vue'
-import { computed, defineProps, ref } from 'vue'
+import { computed, defineProps, onMounted, ref } from 'vue'
 
 const props = defineProps({
   companies: {
@@ -34,15 +34,26 @@ const props = defineProps({
     required: true,
   },
 })
+// Reactive state for companies to display
+const companiesToDisplay = ref([])
+onMounted(() => {
+  companiesToDisplay.value = pagedCompanies.value
+})
 
+// Pagination logic
 const page = ref(1)
-const perPage = 10
-const maxPages = computed(() => Math.ceil(props.companies.length / perPage))
+const companiesPerPage = 10
+const maxPages = computed(() => Math.ceil(props.companies.length / companiesPerPage))
 
 const pagedCompanies = computed(() => {
-  const start = (page.value - 1) * perPage
-  return props.companies.slice(start, start + perPage)
+  const start = (page.value - 1) * companiesPerPage
+  return props.companies.slice(start, start + companiesPerPage)
 })
+
+// sorting logic
+const handleSortBy = (sortBy) => {
+  console.log(`Sorting by: ${sortBy}`)
+}
 </script>
 
 <style scoped>

@@ -1,25 +1,27 @@
 <template>
-  <div class="row">
-    <div class="col">name</div>
-    <div class="col">isActive</div>
-    <div class="col">Country</div>
-    <div class="col">Added</div>
-  </div>
+  <q-item>
+    <div class="row full-width border-bottom border-md titles">
+      <div v-for="title in titles" :key="title.sortBy" class="col text-bold">
+        <div @click="$emit('handleSortBy', title.sortBy)" class="col">
+          {{ title.label }}
+        </div>
+      </div>
+    </div>
+  </q-item>
 </template>
 
 <script setup>
+const titles = [
+  { label: 'Name', sortBy: 'name' },
+  { label: 'Is Active', sortBy: 'isActive' },
+  { label: 'Country', sortBy: 'country' },
+  { label: 'Added', sortBy: 'dateAdded' },
+]
+
 // No script logic needed for static titles
 </script>
-
 <style scoped>
-.company-list-titles {
-  display: flex;
-  gap: 2rem;
-  font-weight: bold;
-  padding: 1rem 0;
-  border-bottom: 1px solid #eee;
-}
-.title {
-  flex: 1;
+.titles {
+  border-bottom: 2px solid #363535;
 }
 </style>

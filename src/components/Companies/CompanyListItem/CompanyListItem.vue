@@ -5,7 +5,7 @@
       @click="handleClick(company)"
     >
       <div class="col">
-        <q-item-section> {{ company.name }}</q-item-section>
+        <div>{{ company.name }}</div>
       </div>
       <div class="col">
         <q-badge :color="company.active ? 'green' : 'red'">
@@ -13,10 +13,10 @@
         </q-badge>
       </div>
       <div class="col">
-        <p>{{ props.company?.country }}</p>
+        <div>{{ props.company?.country }}</div>
       </div>
       <div class="col">
-        <p>{{ formatDateVerbal(props?.company?.dateAdded) }}</p>
+        <div>{{ formatDateVerbal(props?.company?.dateAdded) }}</div>
       </div>
       <!-- Company item content goes here -->
     </div>

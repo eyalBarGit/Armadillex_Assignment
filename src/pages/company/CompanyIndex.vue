@@ -3,9 +3,11 @@
     <q-card-section>
       <h1>Companies</h1>
     </q-card-section>
-    <q-card-section>
-      <CompaniesList :companies="companies" v-if="companies" />
-    </q-card-section>
+    <div>
+      <q-card-section class="relative">
+        <CompaniesList :companies="companies" v-if="companies" />
+      </q-card-section>
+    </div>
   </q-card>
 </template>
 
