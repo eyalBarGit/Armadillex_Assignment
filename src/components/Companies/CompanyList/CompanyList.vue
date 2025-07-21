@@ -26,7 +26,7 @@
 <script setup>
 import CompanyListItem from '../CompanyListItem/CompanyListItem.vue'
 import CompanyListTitles from './CompanyListTitles/CompanyListTitles.vue'
-import { computed, defineProps, onMounted, ref } from 'vue'
+import { computed, defineProps, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   companies: {
@@ -50,9 +50,13 @@ const pagedCompanies = computed(() => {
   return props.companies.slice(start, start + companiesPerPage)
 })
 
+watch(pagedCompanies, () => {
+  companiesToDisplay.value = pagedCompanies.value
+})
+
 // sorting logic
 const handleSortBy = (sortBy) => {
-  console.log(`Sorting by: ${sortBy}`)
+  console.log(`Sorting by: ${sortBy.sortBy} in ${sortBy.direction} order`)
 }
 </script>
 
