@@ -29,7 +29,6 @@
         <q-tr :props="props" @click="handleCopanyClick(props.row)" class="cursor-pointer">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             <template v-if="col.name === 'added'">
-              {{log(col)}}
               {{ formatDateVerbal(col.value) }}
             </template>
             <template v-else>
@@ -55,7 +54,7 @@ import { ref, defineProps, onMounted } from 'vue'
 import { columns } from './companies.table.service'
 import { useRouter } from 'vue-router'
 import { ROUTES } from 'src/router/const.js'
-import {  formatDateVerbal } from 'src/services/util.service.js'
+import { formatDateVerbal } from 'src/services/util.service.js'
 
 const router = useRouter()
 const props = defineProps({
@@ -79,8 +78,5 @@ const handleCopanyClick = (company) => {
     name: ROUTES.COMPANY,
     params: { companyId: company.id },
   })
-}
-const log=(val)=>{
-  console.log('val', val)
 }
 </script>
