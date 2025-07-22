@@ -12,7 +12,11 @@ async function getCompanies() {
 }
 
 function _refactorCompanies(companies) {
-  return companies.map((company) => ({
+  return companies.map((company) => _companyStructure(company))
+}
+
+function _companyStructure(company) {
+  return {
     id: company.company_id,
     active: company.active,
     name: company.company_name,
@@ -22,9 +26,8 @@ function _refactorCompanies(companies) {
     isDpfFound: company.dpf_found,
     parentId: company.parent_id,
     providesAiServices: company.provides_ai_services,
-  }))
+  }
 }
-
 // Raw company data
 // "active": true,
 // "company_id": "pAuC6RQ71bBG",
@@ -269,3 +272,18 @@ var demoCompanies = [
     provides_ai_services: true,
   },
 ]
+
+export const createCompany = (company) => {
+  const newCompany = {
+    active: company.active,
+    company_id: company.company_id,
+    company_legal_name: company.company_legal_name,
+    company_name: company.company_name,
+    country: company.country,
+    date_added: 'Sun, 26 Jan 2025 16:24:46 GMT',
+    dpf_found: company.dpf_found,
+    parent_id: 'oiGMSMk2vNhr',
+    provides_ai_services: company.provides_ai_services,
+  }
+  return _companyStructure(newCompany)
+}

@@ -4,22 +4,37 @@
       flat
       :rows="rows"
       :columns="columns"
-      :filter="filter"
+      :filter="tableFilter"
       row-key="name"
       :pagination="pagination"
     >
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+      <template v-slot:top>
+        <div class="flex justify-between items-center full-width">
+          <q-input dense debounce="300" v-model="tableFilter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search " />
+            </template>
+          </q-input>
+          <q-btn
+            @click="$emit('showDialog')"
+            push
+            style="background: black; color: white"
+            class="q-ml-md"
+            >Add Company</q-btn
+          >
+        </div>
       </template>
 
       <template v-slot:body="props">
         <q-tr :props="props" @click="handleCopanyClick(props.row)" class="cursor-pointer">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
-            {{ col.value }}
+            <template v-if="col.name === 'added'">
+              {{log(col)}}
+              {{ formatDateVerbal(col.value) }}
+            </template>
+            <template v-else>
+              {{ col.value }}
+            </template>
           </q-td>
         </q-tr>
       </template>
@@ -40,6 +55,7 @@ import { ref, defineProps, onMounted } from 'vue'
 import { columns } from './companies.table.service'
 import { useRouter } from 'vue-router'
 import { ROUTES } from 'src/router/const.js'
+import {  formatDateVerbal } from 'src/services/util.service.js'
 
 const router = useRouter()
 const props = defineProps({
@@ -52,7 +68,7 @@ const rows = ref([])
 onMounted(() => {
   rows.value = props.companies
 })
-const filter = ref('')
+const tableFilter = ref('')
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -63,5 +79,8 @@ const handleCopanyClick = (company) => {
     name: ROUTES.COMPANY,
     params: { companyId: company.id },
   })
+}
+const log=(val)=>{
+  console.log('val', val)
 }
 </script>
