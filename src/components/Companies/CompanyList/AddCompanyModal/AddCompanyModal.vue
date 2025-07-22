@@ -4,12 +4,14 @@
       :model-value="showDialog"
       @update:model-value="(val) => emit('update:showDialog', val)"
     >
-      <q-card>
+      <q-card style="min-width: 350px">
         <q-card-section>
           <div v-if="modalState === 'search'">
             <div class="text-h6">Company Name Search</div>
-            <q-input v-model="searchQuery" label="Type company name" />
-            <q-btn label="Search" @click="handleSearch" class="q-mt-md" />
+            <div class="flex full-width justify-between q-mb-lg">
+              <q-input v-model="searchQuery" label="Type company name" />
+              <q-btn flat label="Search" @click="handleSearch" class="q-mt-md" />
+            </div>
           </div>
 
           <div v-if="modalState === 'suggestions'">
@@ -17,13 +19,16 @@
             <div v-for="(name, index) in suggestions" :key="index" class="q-my-sm">
               <q-btn :label="name" @click="selectSuggestion(name)" flat />
             </div>
-            <q-btn label="Retry" @click="retrySearch" flat class="q-mt-sm" />
-            <q-btn
-              label="Use original"
-              @click="selectSuggestion(searchQuery)"
-              flat
-              class="q-mt-sm"
-            />
+            <q-spinner v-if="!suggestions.length" color="primary" size="3em" :thickness="2" />
+            <div v-else>
+              <q-btn label="Retry" @click="retrySearch" flat class="q-mt-sm" />
+              <q-btn
+                label="Use original"
+                @click="selectSuggestion(searchQuery)"
+                flat
+                class="q-mt-sm"
+              />
+            </div>
           </div>
 
           <q-separator />
@@ -93,11 +98,6 @@ const searchQuery = ref('')
 const suggestions = ref([])
 const form = ref({
   name: '',
-  legalName: '',
-  country: '',
-  active: false,
-  isDpfFound: false,
-  providesAiServices: false,
 })
 const props = defineProps({
   showDialog: {
@@ -145,11 +145,6 @@ const resetCompanyLocalState = () => {
 }
 const resetForm = () => {
   form.value.name = ''
-  form.value.legalName = ''
-  form.value.country = ''
-  form.value.active = true
-  form.value.isDpfFound = false
-  form.value.providesAiServices = false
 }
 const addNewCompany = () => {
   const createdCompany = createCompany(companyLocalState)
@@ -169,7 +164,6 @@ watch(
   () => props.showDialog,
   (val) => {
     if (val) {
-      // רק כשהדיאלוג נפתח מחדש
       modalState.value = 'search'
       resetForm()
       resetCompanyLocalState()

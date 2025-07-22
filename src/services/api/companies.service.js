@@ -272,11 +272,18 @@ var demoCompanies = [
     provides_ai_services: true,
   },
 ]
-
+const _generateId = (length = 12) => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let id = ''
+  for (let i = 0; i < length; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return id
+}
 export const createCompany = (company) => {
   const newCompany = {
     active: company.active,
-    company_id: company.company_id,
+    company_id: _generateId(),
     company_legal_name: company.company_legal_name,
     company_name: company.company_name,
     country: company.country,
