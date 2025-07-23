@@ -29,7 +29,7 @@
         <q-tr :props="props" @click="handleCopanyClick(props.row)" class="cursor-pointer">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             <template v-if="col.name === 'name'">
-              <div style="max-width: 50px">
+              <div style="width: 140px">
                 {{ col.value }}
               </div>
             </template>
