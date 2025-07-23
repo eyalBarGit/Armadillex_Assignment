@@ -28,7 +28,12 @@
       <template v-slot:body="props">
         <q-tr :props="props" @click="handleCopanyClick(props.row)" class="cursor-pointer">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
-            <template v-if="col.name === 'added'">
+            <template v-if="col.name === 'name'">
+              <div style="max-width: 50px">
+                {{ col.value }}
+              </div>
+            </template>
+            <template v-else-if="col.name === 'added'">
               {{ formatDateVerbal(col.value) }}
             </template>
             <template v-else>
